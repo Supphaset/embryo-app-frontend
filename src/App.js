@@ -13,11 +13,11 @@ function App() {
       <Header/>
       <Container>
         <Routes>
-          <Route exact path="/" element={<PatientList/>}/>
-          <Route exact path="/patientform" element={<PatientForm/>} />
-          <Route path='/patient/:id' element={<PatientProfile/>}/>
-          <Route path='embryoform/:id' element={<EmbryoForm/>}/>
-          <Route path='embryo/:patientid/:embryoid' element={<EmbryoProfile/>}/>
+          <Route exact path="embryo-app-frontend/" element={<PatientList/>}/>
+          <Route exact path="embryo-app-frontend/patientform" element={<PatientForm/>} />
+          <Route path='embryo-app-frontend/patient/:id' element={<PatientProfile/>}/>
+          <Route path='embryo-app-frontend/embryoform/:id' element={<EmbryoForm/>}/>
+          <Route path='embryo-app-frontend/embryo/:patientid/:embryoid' element={<EmbryoProfile/>}/>
         </Routes>
       </Container>
     </Router>
