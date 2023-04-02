@@ -1,6 +1,6 @@
 import { Button } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const patients = [
   {
@@ -21,6 +21,11 @@ const patients = [
 ]
 
 function PatientList() {
+  const nevigate = useNavigate();
+  function handleClick(path) {
+    nevigate(path);
+  }
+
   return (
     <div className='table'>
     <Table striped bordered hover size="l" padding>
@@ -44,7 +49,7 @@ function PatientList() {
       </tbody>
     </Table>
     <div className="text-center">
-      <Button href="/embryo-app-frontend/patientform" variant="primary" className="">Add Patient</Button>
+      <Button onClick={() => handleClick("/embryo-app-frontend/patientform")}  variant="primary" className="">Add Patient</Button>
     </div>
       
     </div>

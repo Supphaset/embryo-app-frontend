@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Row, Col, Image, Button, } from 'react-bootstrap'
 import ProgressBar from '../components/ViabilityChart'
+import { useNavigate } from 'react-router-dom'
 
 const patients = [
   {
@@ -123,6 +124,11 @@ const patients = [
 ]
 
 const EmbryoProfile = () => {
+  const nevigate = useNavigate();
+  function handleClick(path) {
+    nevigate(path);
+  }
+
   const {patientid, embryoid} = useParams()
   const embryos = patients.find((p)=> p.hospitalNo === patientid).embryos
   const embryo = embryos.find((e)=> e.embryoId === embryoid)
@@ -144,7 +150,7 @@ const EmbryoProfile = () => {
                 </Row>
                 </div>
                 <div className='my-3'>
-                    <Button href={`/embryo-app-frontend/patient/${patientid}`}>Patient Profile</Button>
+                    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${patientid}`)}>Patient Profile</Button>
                 </div>
             </Col>
             <Col className='embryoPred'>

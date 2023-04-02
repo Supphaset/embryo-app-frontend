@@ -12,7 +12,7 @@ function App() {
     <Router>
       <Header/>
       <Container>
-        <Routes>
+        <Routes >
           <Route exact path="/embryo-app-frontend/" element={<PatientList/>}/>
           <Route exact path="/embryo-app-frontend/patientform/" element={<PatientForm/>} />
           <Route path='/embryo-app-frontend/patient/:id/' element={<PatientProfile/>}/>

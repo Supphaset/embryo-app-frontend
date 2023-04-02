@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, Button, ListGroup, Image} from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const patients = [
   {
@@ -126,6 +126,10 @@ const EmbryoList = () => {
   const {id} = useParams()
   const embryos = patients.find((p)=> p.hospitalNo === id).embryos.sort((a,b) => b.viablity - a.viablity)
 
+  const nevigate = useNavigate();
+  function handleClick(path) {
+    nevigate(path);
+  }
   return (
     <Col className='center-div'>
         <div className='patient-profile center-div'>
@@ -134,7 +138,7 @@ const EmbryoList = () => {
             {embryos.map((embryo)=>(
               <Row>
                 <Col>
-              <ListGroup.Item action href={`/embryo-app-frontend/embryo/${id}/${embryo.embryoId}`}>
+              <ListGroup.Item action onClick={() => handleClick(`/embryo-app-frontend/embryo/${id}/${embryo.embryoId}`)}>
                 <Row>
                   <Col md={4}>
                       <Image src={embryo.imgPath} alt={embryo.imgName} fluid rounded/>
@@ -176,7 +180,7 @@ const EmbryoList = () => {
             ))}
           </ListGroup>
         </div>
-        <Button href={`/embryo-app-frontend/embryoform/${id}`} variant="primary" className="">Add Embryo</Button>
+        <Button onClick={() => handleClick(`/embryo-app-frontend/embryoform/${id}`)} variant="primary" className="">Add Embryo</Button>
     </Col>
   )
 }
