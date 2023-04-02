@@ -1,0 +1,114 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.form {
+  width: 80%;
+  padding: 12px 50px;
+  margin: auto;
+  margin-top: 2em;
+  background-color: rgb(174, 181, 188);
+  margin-bottom: 2em;
+}
+.head-form{
+  text-align: center;
+  margin: 1ex
+}
+
+.table{
+  margin-top: 3em;
+}
+
+.formbt{
+  margin-top: 20px;
+}
+
+.center-div{
+  text-align: center;
+  width:100%
+}
+
+.patient-profile{
+  margin:10px;
+  padding:20px;
+  background-color: rgb(174, 181, 188);
+}
+
+.patient-info{
+  text-align: left;
+  width:100%;
+  font-size: 80%
+}
+
+.patient-infohead{
+  font-size:100%
+}
+
+.info-value{
+  background-color: rgb(238, 238, 238);
+  margin: 0px 2px;
+  padding: 0px 3px
+}
+
+.delete{
+  height:100%;
+  margin-left:0px
+}
+
+.embryolist{
+  text-align: left;
+  width: 100%;
+}
+
+.mr0{
+  margin-right: 0px;
+}
+
+.embryoImg{
+  width:50%
+}
+
+.embryoInfo{
+  width:100%;
+  margin: 1em 1em 0em 0em;
+  background-color: rgb(174, 181, 188);
+  padding: 12px 50px;
+  text-align: center;
+}
+.div-embryoInfo{
+  width:100%;
+  background-color: rgb(216, 224, 231);
+  padding: 15px
+}
+
+.div-embryoInfotext{
+  margin-top: 20px;
+  background-color: rgb(216, 224, 231);
+  padding: 10px;
+}
+
+.pred-val{
+  background-color: rgb(238, 238, 238);
+  margin: 10px 10px 0px 10px;
+  padding:1em
+}
+
+.embryoPred{
+  text-align: center;
+  width: 100%;
+  margin-top: 1em;
+}
+
+.embryoPredh{
+  margin-top: 1em;
+}
