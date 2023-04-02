@@ -6,7 +6,7 @@ function Header() {
     <div >
       <Navbar className='center-div' expand="lg" variant="light" bg="secondary">
         <Container  >
-          <Navbar.Brand href="/" className='center-div' ><h3>Embryo Selection for IVF Using Machine Learning Techniques</h3></Navbar.Brand>
+          <Navbar.Brand href="/embryo-app-frontend/" className='center-div' ><h3>Embryo Selection for IVF Using Machine Learning Techniques</h3></Navbar.Brand>
         </Container>
       </Navbar>
     </div>

@@ -144,7 +144,7 @@ const EmbryoProfile = () => {
                 </Row>
                 </div>
                 <div className='my-3'>
-                    <Button href={`/patient/${patientid}`}>Patient Profile</Button>
+                    <Button href={`/embryo-app-frontend/patient/${patientid}`}>Patient Profile</Button>
                 </div>
             </Col>
             <Col className='embryoPred'>

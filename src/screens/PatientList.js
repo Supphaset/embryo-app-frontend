@@ -38,13 +38,13 @@ function PatientList() {
             <td>{patient.hospitalNo}</td>
             <td>{patient.ivfNo}</td>
             <td>{patient.name}</td>
-            <td><Link to={`/patient/${patient.ivfNo}`}>Patient Profile</Link></td>
+            <td><Link to={`/embryo-app-frontend/patient/${patient.ivfNo}`}>Patient Profile</Link></td>
           </tr>
         ))}
       </tbody>
     </Table>
     <div className="text-center">
-      <Button href="/patientform" variant="primary" className="">Add Patient</Button>
+      <Button href="/embryo-app-frontend/patientform" variant="primary" className="">Add Patient</Button>
     </div>
       
     </div>

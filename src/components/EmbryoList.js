@@ -134,7 +134,7 @@ const EmbryoList = () => {
             {embryos.map((embryo)=>(
               <Row>
                 <Col>
-              <ListGroup.Item action href={`/embryo/${id}/${embryo.embryoId}`}>
+              <ListGroup.Item action href={`/embryo-app-frontend/embryo/${id}/${embryo.embryoId}`}>
                 <Row>
                   <Col md={4}>
                       <Image src={embryo.imgPath} alt={embryo.imgName} fluid rounded/>
@@ -176,7 +176,7 @@ const EmbryoList = () => {
             ))}
           </ListGroup>
         </div>
-        <Button href={`/embryoform/${id}`} variant="primary" className="">Add Embryo</Button>
+        <Button href={`/embryo-app-frontend/embryoform/${id}`} variant="primary" className="">Add Embryo</Button>
     </Col>
   )
 }
