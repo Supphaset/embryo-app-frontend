@@ -25,8 +25,8 @@ const patients = [
     semenAnalysis:'Unknown',
     embryos:[
       {
-        imgPath:'/images/embryo_img.png',
-        imgGradPath:'/images/grad_cam_img.png',
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
         embryoId:'1',
         viablity:87,
         stage:'Blastocyst',
@@ -57,8 +57,8 @@ const patients = [
     semenAnalysis:'Unknown',
     embryos:[
         {
-        imgPath:'/images/embryo_img.png',
-        imgGradPath:'/images/grad_cam_img.png',
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
         embryoId:'1',
         viablity:82,
         stage:'Blastocyst',
@@ -70,8 +70,8 @@ const patients = [
         patientId:'1'
       },
       {
-        imgPath:'/images/embryo_img.png',
-        imgGradPath:'/images/grad_cam_img.png',
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
         embryoId:'2',
         viablity:85,
         stage:'',
@@ -83,8 +83,8 @@ const patients = [
         patientId:'1'
       },
       {
-        imgPath:'/images/embryo_img.png',
-        imgGradPath:'/images/grad_cam_img.png',
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
         embryoId:'3',
         viablity:23,
         stage:'',
