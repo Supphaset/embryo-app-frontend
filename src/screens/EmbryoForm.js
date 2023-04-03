@@ -1,9 +1,16 @@
 import React from 'react'
 import {Form, Button, Row, Col} from 'react-bootstrap'
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const EmbryoForm = () => {
+  const {id} = useParams()
+  const nevigate = useNavigate();
+  function handleClick(path) {
+    nevigate(path);
+  }
   return (
+    <div>
     <div className='form'>
     <h4 className='head-form'>EmbryoForm</h4>
     <Form>
@@ -39,6 +46,8 @@ const EmbryoForm = () => {
         <Button variant="primary" type="submit" >Submit</Button>
       </div>
     </Form>
+    </div>
+    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${id}`)}>Patient Profile</Button>
     </div>
   )
 }
