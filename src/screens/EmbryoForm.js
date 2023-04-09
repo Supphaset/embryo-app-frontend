@@ -14,9 +14,9 @@ const EmbryoForm = () => {
     <div className='form'>
     <h4 className='head-form'>EmbryoForm</h4>
     <Form>
-      <Form.Group controlId="embryoName" className="mb-3">
-        <Form.Label>Embryo Name</Form.Label>
-        <Form.Control type="text"  placeholder="Embryo Name" required/>
+      <Form.Group controlId="embryoNo" className="mb-3">
+        <Form.Label>Embryo No.</Form.Label>
+        <Form.Control type="text"  placeholder="Embryo No." required/>
       </Form.Group>
       <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Embryo Image</Form.Label>

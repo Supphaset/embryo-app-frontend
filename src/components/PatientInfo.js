@@ -4,7 +4,7 @@ import { Row,Col, Button,Form} from 'react-bootstrap'
 
 const patients = [
   {
-    hospitalNo: '1',
+    fmHN: '1',
     ivfNo:'1',
     fmName:'Supphaset Engphaiboon',
     fmAge:25,
@@ -15,6 +15,7 @@ const patients = [
     durationSim:'Unknown',
     amhLv:'Unknown',
     fshBsLv:'Unknown',
+    mHN:'unknown',
     mName:'Unknown',
     mAge:'Unknown',
     mBmi:'Unknown',
@@ -36,7 +37,7 @@ const patients = [
     ]
   },
   {
-    hospitalNo: '2',
+    fmHN: '2',
     ivfNo:'2',
     fmName:'Supphaset Engphaiboon',
     fmAge:25,
@@ -47,6 +48,7 @@ const patients = [
     durationSim:'Unknown',
     amhLv:'Unknown',
     fshBsLv:'Unknown',
+    mHN:'unknown',
     mName:'Unknown',
     mAge:'Unknown',
     mBmi:'Unknown',
@@ -58,7 +60,7 @@ const patients = [
     embryos:[]
   },
   {
-    hospitalNo: '3',
+    fmHN: '3',
     ivfNo:'3',
     fmName:'Supphaset Engphaiboon',
     fmAge:25,
@@ -69,6 +71,7 @@ const patients = [
     durationSim:'Unknown',
     amhLv:'Unknown',
     fshBsLv:'Unknown',
+    mHN:'unknown',
     mName:'Unknown',
     mAge:'Unknown',
     mBmi:'Unknown',
@@ -83,10 +86,10 @@ const patients = [
 
 const PatientInfo = () => {
   const {id} = useParams()
-  const patient = patients.find((p)=> p.hospitalNo === id)
+  const patient = patients.find((p)=> p.fmHN === id)
 
   const [fmName, setFmName] = useState('')
-  const [hospitalNo,setHospitalNumber] = useState('')
+  const [fmHN,setFmHN] = useState('')
   const [ivfNo,setIvfNo] = useState('')
   const [fmAge,setFmAge] = useState('')
   const [fmBmi,setFmBmi] = useState('')
@@ -96,6 +99,7 @@ const PatientInfo = () => {
   const [durationSim,setDurationSim] = useState('')
   const [amhLv,setAmhLv] = useState('')
   const [fshBsLv,setFshBsLv] = useState('')
+  const [mHN,setMHN] = useState('')
   const [mName,setMName] = useState('')
   const [mAge,setMAge] = useState('')
   const [mBmi,setMBmi] = useState('')
@@ -107,7 +111,7 @@ const PatientInfo = () => {
 
   useEffect(() =>{
     setFmName(patient.fmName)
-    setHospitalNumber(patient.hospitalNo)
+    setFmHN(patient.fmHN)
     setIvfNo(patient.ivfNo)
     setFmAge(patient.fmAge)
     setFmBmi(patient.fmBmi)
@@ -117,6 +121,7 @@ const PatientInfo = () => {
     setDurationSim(patient.durationSim)
     setAmhLv(patient.amhLv)
     setFshBsLv(patient.fshBsLv)
+    setMHN(patient.mHN)
     setMName(patient.mName)
     setMAge(patient.mAge)
     setMBmi(patient.mBmi)
@@ -137,7 +142,7 @@ const PatientInfo = () => {
             <Row className="mb-3">
             <Form.Group as={Col} xs={2} controlId="hospitalNo">
                 <Form.Label>Hospital No.</Form.Label>
-                <Form.Control type="text" placeholder="HN" required size="sm" value={hospitalNo} onChange={(e) => setHospitalNumber(e.target.value)}/>
+                <Form.Control type="text" placeholder="HN" required size="sm" value={fmHN} onChange={(e) => setFmHN(e.target.value)}/>
             </Form.Group>
 
             <Form.Group as={Col} xs={2} controlId="id">
@@ -199,16 +204,20 @@ const PatientInfo = () => {
 
             <h4>Male</h4>
             <Row className="mb-3">
+            <Form.Group as={Col} xs={3} controlId="name">
+                <Form.Label>Hospital No.</Form.Label>
+                <Form.Control type="text" placeholder="Name" required size="sm" value={mHN} onChange={(e) => setMHN(e.target.value)}/>
+            </Form.Group>
             <Form.Group as={Col} controlId="name">
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" placeholder="Name" required size="sm" value={mName} onChange={(e) => setMName(e.target.value)}/>
             </Form.Group>
-            <Form.Group as={Col} xs={3} controlId="name">
+            </Row>
+            <Row className="mb-3">
+              <Form.Group as={Col}  controlId="name">
                 <Form.Label>Age</Form.Label>
                 <Form.Control type="text" placeholder="Age" required size="sm" value={mAge} onChange={(e) => setMAge(e.target.value)}/>
             </Form.Group>
-            </Row>
-            <Row className="mb-3">
             <Form.Group as={Col} controlId="name">
                 <Form.Label>BMI</Form.Label>
                 <Form.Control type="text" placeholder="BMI" required size="sm" value={mBmi} onChange={(e) => setMBmi(e.target.value)}/>
@@ -217,12 +226,12 @@ const PatientInfo = () => {
                 <Form.Label>TC (M/ml)</Form.Label>
                 <Form.Control type="text" placeholder="TC (M/ml)" required size="sm" value={tc} onChange={(e) => setTc(e.target.value)}/>
             </Form.Group>
+            </Row>
+            <Row className="mb-3">
             <Form.Group as={Col} controlId="name">
                 <Form.Label>Motility (%)</Form.Label>
                 <Form.Control type="text" placeholder="Motility (%)" required size="sm" value={motility} onChange={(e) => setMotility(e.target.value)}/>
             </Form.Group>
-            </Row>
-            <Row className="mb-3">
             <Form.Group as={Col} controlId="name">
                 <Form.Label>Progressive Motility (%)</Form.Label>
                 <Form.Control type="text" placeholder="Progressive motility (%)" required size="sm" value={pMotility} onChange={(e) => setPMotility(e.target.value)}/>
@@ -231,9 +240,11 @@ const PatientInfo = () => {
                 <Form.Label>Normal Morphology (%)</Form.Label>
                 <Form.Control type="text" placeholder="Normal morphology (%)" required size="sm" value={nMotility} onChange={(e) => setNMotility(e.target.value)}/>
             </Form.Group>
-            <Form.Group as={Col} controlId="name">
+            </Row>
+            <Row>
+              <Form.Group as={Col} controlId="name">
                 <Form.Label>Semen Analysis</Form.Label>
-                <Form.Control type="text" placeholder="Semen analysis" required size="sm" value={semenAnalysis} onChange={(e) => setSemenAnalysis(e.target.value)}/>
+                <Form.Control as="textarea" placeholder="Semen analysis"  size="sm" value={semenAnalysis} onChange={(e) => setSemenAnalysis(e.target.value)}/>
             </Form.Group>
             </Row>
         </Form>
