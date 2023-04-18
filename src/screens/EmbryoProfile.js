@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 import { useParams } from 'react-router-dom'
-import { Row, Col, Image, Button, } from 'react-bootstrap'
+import { Row, Col, Image, Button, Form } from 'react-bootstrap'
 import ProgressBar from '../components/ViabilityChart'
 import { useNavigate } from 'react-router-dom'
 
@@ -33,7 +33,10 @@ const patients = [
         viablity:87,
         stage:'Blastocyst',
         icm:'Good',
-        te:'Good'
+        te:'Good',
+        transfered:true,
+        transferedImage:'/embryo-app-frontend/images/embryo_img.png',
+        success:''
       }
     ]
   },
@@ -69,7 +72,10 @@ const patients = [
         pStage:'Blastocyst',
         pIcm:'Good',
         pTe:'Good',
-        patientId:'1'
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
       },
       {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
@@ -82,7 +88,10 @@ const patients = [
         pStage:'Blastocyst',
         pIcm:'Good',
         pTe:'Good',
-        patientId:'1'
+        patientId:'1',
+        transfered:true,
+        transferedImage:'',
+        success:'Success'
       },
       {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
@@ -95,7 +104,10 @@ const patients = [
         pStage:'Blastocyst',
         pIcm:'Poor',
         pTe:'Poor',
-        patientId:'1'
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
       }
     ]
   },
@@ -132,13 +144,17 @@ const EmbryoProfile = () => {
   const {patientid, embryoid} = useParams()
   const embryos = patients.find((p)=> p.hospitalNo === patientid).embryos
   const embryo = embryos.find((e)=> e.embryoId === embryoid)
+  const [isEdit,setIsEdit] = useState(false)
+  console.log(embryo)
+  console.log(isEdit)
+
   return (
     <>
         <Row  className='my-3'>
             <Col>
                 <div className='embryoInfo'>
                 <Row>
-                <h5>Embryo Information</h5>
+                <h4>Embryo Information</h4>
                 <div className='div-embryoInfo'>
                     <Image src={embryo.imgPath} alt={embryo.imgName} fluid rounded width="50%"/>
                 </div>
@@ -148,6 +164,58 @@ const EmbryoProfile = () => {
                     <Col>{embryo.icm !== '' ? <div className='div-embryoInfotext'><h6>ICM</h6><p>{embryo.icm}</p></div>: null}</Col>
                     <Col>{embryo.te !== '' ? <div className='div-embryoInfotext'><h6>TE</h6><p>{embryo.te}</p></div>: null}</Col>
                 </Row>
+                {
+                  embryo.transfered===true ?
+                  <>
+                    <Row className='my-3' >
+                      <h4>Transfered Information</h4>
+                    </Row>
+                    {
+                      embryo.transferedImage === '' ?
+                      <Row>
+                        <Form>
+                          <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>Transfered Embryo Image</Form.Label>
+                            <Form.Control type="file" />
+                          </Form.Group>
+                          <Button variant="primary" type="submit" >Submit</Button>
+                        </Form>
+                      </Row>: <div className='div-embryoInfo'>
+                          <Image src={embryo.transferedImage} alt='transfered embryo image' fluid rounded width="50%"/>
+                      </div>
+                    }
+                    {
+                      embryo.success === '' | isEdit?
+                      <Row className='my-3'>
+                        <Col>
+                          <h6>Embryo Status:</h6>
+                        </Col>
+                        <Col>
+                          <Form.Select size='sm'>
+                            <option></option>
+                            <option value="success">Success</option>
+                            <option value="fail">Fail</option>
+                          </Form.Select>
+                        </Col>
+                        <Col>
+                          <Button variant="primary" onClick={()=>setIsEdit(false)}>Submit</Button>
+                        </Col>
+                      </Row>:<div className='div-embryoInfo my-3'>
+                      <Row className='my-3 left'>
+                        <Col>
+                          <h6>Embryo Status:</h6>
+                        </Col>
+                        <Col>
+                          <p>{embryo.success}</p>
+                        </Col>
+                        <Col>
+                          <Button variant="light" onClick={()=>setIsEdit(true)}>Edit</Button>
+                        </Col>
+                      </Row>
+                      </div>
+                    }
+                  </>:<></>
+                }
                 </div>
                 <div className='my-3'>
                     <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${patientid}`)}>Patient Profile</Button>

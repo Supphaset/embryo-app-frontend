@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col, Button, ListGroup, Image} from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
+import {Delete, AddCircle, DoDisturbOn} from '@mui/icons-material'
 
 const patients = [
   {
@@ -31,7 +32,10 @@ const patients = [
         viablity:87,
         stage:'Blastocyst',
         icm:'Good',
-        te:'Good'
+        te:'Good',
+        transfered:true,
+        transferedImage:'/embryo-app-frontend/images/embryo_img.png',
+        success:''
       }
     ]
   },
@@ -67,7 +71,10 @@ const patients = [
         pStage:'Blastocyst',
         pIcm:'Good',
         pTe:'Good',
-        patientId:'1'
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
       },
       {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
@@ -80,7 +87,10 @@ const patients = [
         pStage:'Blastocyst',
         pIcm:'Good',
         pTe:'Good',
-        patientId:'1'
+        patientId:'1',
+        transfered:true,
+        transferedImage:'',
+        success:'Success'
       },
       {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
@@ -93,7 +103,10 @@ const patients = [
         pStage:'Blastocyst',
         pIcm:'Poor',
         pTe:'Poor',
-        patientId:'1'
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
       }
     ]
   },
@@ -125,17 +138,36 @@ const EmbryoList = () => {
 
   const {id} = useParams()
   const embryos = patients.find((p)=> p.hospitalNo === id).embryos.sort((a,b) => b.viablity - a.viablity)
-
+  const embryosList = embryos.filter((e)=> !e.transfered)
+  const embryosTransfered = embryos.filter((e)=> e.transfered)
   const nevigate = useNavigate();
   function handleClick(path) {
     nevigate(path);
   }
+
   return (
     <Col className='center-div'>
-        <div className='patient-profile center-div'>
-          <h4>Embryo</h4>
+        <EmbryoListComponent embryosList={embryosList} transfered={false} id={id}/>
+        <Button onClick={() => handleClick(`/embryo-app-frontend/embryoform/${id}`)} variant="primary" className="">Add Embryo</Button>
+        <EmbryoListComponent embryosList={embryosTransfered} transfered={true} id={id}/>
+    </Col>
+  )
+}
+
+const EmbryoListComponent = (props) =>{
+  const nevigate = useNavigate();
+  function handleClick(path) {
+    nevigate(path);
+  }
+  const id = props.id
+  
+  return (
+    <div className='patient-profile center-div'>
+          <h4>
+            {props.transfered=== false ? 'Embryo' : 'Transfered Embryo'}
+          </h4>
           <ListGroup>
-            {embryos.map((embryo)=>(
+            {props.embryosList.map((embryo)=>(
               <Row>
                 <Col>
               <ListGroup.Item action onClick={() => handleClick(`/embryo-app-frontend/embryo/${id}/${embryo.embryoId}`)}>
@@ -145,43 +177,60 @@ const EmbryoList = () => {
                   </Col>
                   <Col className='embryolist'>
                       <Row>
-                          <Col md={4}><h6>Embryo ID</h6></Col>
+                          <Col md={5}><h6>Embryo ID</h6></Col>
                           <Col>{embryo.embryoId}</Col>
                       </Row>
                       <Row>
-                          <Col md={4}><h6>Viablity</h6></Col>
+                          <Col md={5}><h6>Viablity</h6></Col>
                           <Col>{embryo.viablity}%</Col>
                       </Row>
                       <Row>
-                          <Col md={4}><h6>Stage</h6></Col>
+                          <Col md={5}><h6>Stage</h6></Col>
                           <Col>{embryo.stage=== '' ? `${embryo.pStage} (predicted)` : embryo.stage }</Col>
                       </Row>
                       <Row>
-                          <Col md={4}><h6>ICM</h6></Col>
+                          <Col md={5}><h6>ICM</h6></Col>
                           <Col>{embryo.icm=== '' ? `${embryo.pIcm} (predicted)` : embryo.icm }</Col>
                       </Row>
                       <Row>
-                          <Col md={4}><h6>TE</h6></Col>
+                          <Col md={5}><h6>TE</h6></Col>
                           <Col>{embryo.te=== '' ? `${embryo.pTe} (predicted)` : embryo.te }</Col>
                       </Row>
+                      {
+                        embryo.success !== ''?
+                        <Row>
+                          <Col md={5}><h6>Status</h6></Col>
+                          <Col>
+                            {embryo.success}
+                          </Col>
+                        </Row>:<></>
+                      }
                   </Col>
-                  {/* <Col md={1}>
-                    <Button type='button' variant='danger' className='delete' ></Button>
-                  </Col> */}
                 </Row>
               </ListGroup.Item>
               </Col>
-
-
-                  <Col md={1}>
-                    <Button type='button' variant='danger' className='delete' ></Button>
-                  </Col>
-                  </Row>
+              <Col md={1}>
+                {
+                  embryo.transfered=== false ?
+                  <Button type='button' variant='success' className='delete' >
+                    <AddCircle/>
+                  </Button>
+                  :
+                  <Button type='button' variant='light' className='delete' >
+                    <DoDisturbOn/>
+                  </Button>
+                }
+                
+              </Col>
+              <Col md={1}>
+                <Button type='button' variant='danger' className='delete' >
+                  <Delete/>
+                </Button>
+              </Col>
+            </Row>
             ))}
           </ListGroup>
         </div>
-        <Button onClick={() => handleClick(`/embryo-app-frontend/embryoform/${id}`)} variant="primary" className="">Add Embryo</Button>
-    </Col>
   )
 }
 

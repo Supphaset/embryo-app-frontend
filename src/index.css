@@ -62,7 +62,14 @@ code {
 
 .delete{
   height:100%;
-  margin-left:0px
+  margin:0;
+  padding: 1px
+}
+
+.successbtn{
+  height: 50%;
+    margin: 0;
+    padding: 1px
 }
 
 .embryolist{
@@ -111,4 +118,9 @@ code {
 
 .embryoPredh{
   margin-top: 1em;
+}
+
+.left{
+  text-align: left;
+  width: 100%;
 }

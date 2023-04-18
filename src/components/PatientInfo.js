@@ -23,7 +23,7 @@ const patients = [
     motility:'Unknown',
     pMotility:'Unknown',
     nMotility:'Unknown',
-    semenAnalysis:'Unknown',
+    remark:'Unknown',
     embryos:[
       {
         imgPath:'',
@@ -56,7 +56,7 @@ const patients = [
     motility:'Unknown',
     pMotility:'Unknown',
     nMotility:'Unknown',
-    semenAnalysis:'Unknown',
+    remark:'Unknown',
     embryos:[]
   },
   {
@@ -79,7 +79,7 @@ const patients = [
     motility:'Unknown',
     pMotility:'Unknown',
     nMotility:'Unknown',
-    semenAnalysis:'Unknown',
+    remark:'Unknown',
     embryos:[]
   },
 ]
@@ -107,7 +107,7 @@ const PatientInfo = () => {
   const [motility,setMotility] = useState('')
   const [pMotility,setPMotility] = useState('')
   const [nMotility,setNMotility] = useState('')
-  const [semenAnalysis,setSemenAnalysis] = useState('')
+  const [remark,setRemark] = useState('')
 
   useEffect(() =>{
     setFmName(patient.fmName)
@@ -129,7 +129,7 @@ const PatientInfo = () => {
     setMotility(patient.motility)
     setPMotility(patient.pMotility)
     setNMotility(patient.nMotility)
-    setSemenAnalysis(patient.semenAnalysis)
+    setRemark(patient.remark)
   },[patient])
 
   return (
@@ -243,8 +243,8 @@ const PatientInfo = () => {
             </Row>
             <Row>
               <Form.Group as={Col} controlId="name">
-                <Form.Label>Semen Analysis</Form.Label>
-                <Form.Control as="textarea" placeholder="Semen analysis"  size="sm" value={semenAnalysis} onChange={(e) => setSemenAnalysis(e.target.value)}/>
+                <Form.Label>Remark</Form.Label>
+                <Form.Control as="textarea" placeholder="Remark"  size="sm" value={remark} onChange={(e) => setRemark(e.target.value)}/>
             </Form.Group>
             </Row>
         </Form>

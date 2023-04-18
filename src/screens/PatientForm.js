@@ -121,8 +121,8 @@ function PatientForm() {
       </Row>
       <Row>
         <Form.Group as={Col} controlId="name">
-          <Form.Label>Semen Analysis</Form.Label>
-          <Form.Control as="textarea" placeholder="Semen analysis" size="sm"/>
+          <Form.Label>Remark</Form.Label>
+          <Form.Control as="textarea" placeholder="Remark" size="sm"/>
         </Form.Group>
       </Row>
       
