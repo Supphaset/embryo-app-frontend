@@ -1,92 +1,97 @@
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import { Row,Col, Button,Form} from 'react-bootstrap'
+import { listPatientsDetails, updatePatient } from '../actions/patientActions'
+import { useDispatch, useSelector } from 'react-redux'
 
-const patients = [
-  {
-    fmHN: '1',
-    ivfNo:'1',
-    fmName:'Supphaset Engphaiboon',
-    fmAge:25,
-    fmBmi:'Unknown',
-    icsiNo:'Unknown',
-    typeGanad:'Unknown',
-    startDose:'Unknown',
-    durationSim:'Unknown',
-    amhLv:'Unknown',
-    fshBsLv:'Unknown',
-    mHN:'unknown',
-    mName:'Unknown',
-    mAge:'Unknown',
-    mBmi:'Unknown',
-    tc:'Unknown',
-    motility:'Unknown',
-    pMotility:'Unknown',
-    nMotility:'Unknown',
-    remark:'Unknown',
-    embryos:[
-      {
-        imgPath:'',
-        imgId:'',
-        imgName:'',
-        viablity:'',
-        stage:'',
-        icm:'',
-        te:''
-      }
-    ]
-  },
-  {
-    fmHN: '2',
-    ivfNo:'2',
-    fmName:'Supphaset Engphaiboon',
-    fmAge:25,
-    fmBmi:'Unknown',
-    icsiNo:'Unknown',
-    typeGanad:'Unknown',
-    startDose:'Unknown',
-    durationSim:'Unknown',
-    amhLv:'Unknown',
-    fshBsLv:'Unknown',
-    mHN:'unknown',
-    mName:'Unknown',
-    mAge:'Unknown',
-    mBmi:'Unknown',
-    tc:'Unknown',
-    motility:'Unknown',
-    pMotility:'Unknown',
-    nMotility:'Unknown',
-    remark:'Unknown',
-    embryos:[]
-  },
-  {
-    fmHN: '3',
-    ivfNo:'3',
-    fmName:'Supphaset Engphaiboon',
-    fmAge:25,
-    fmBmi:'Unknown',
-    icsiNo:'Unknown',
-    typeGanad:'Unknown',
-    startDose:'Unknown',
-    durationSim:'Unknown',
-    amhLv:'Unknown',
-    fshBsLv:'Unknown',
-    mHN:'unknown',
-    mName:'Unknown',
-    mAge:'Unknown',
-    mBmi:'Unknown',
-    tc:'Unknown',
-    motility:'Unknown',
-    pMotility:'Unknown',
-    nMotility:'Unknown',
-    remark:'Unknown',
-    embryos:[]
-  },
-]
+// const patients = [
+//   {
+//     fmHN: '1',
+//     ivfNo:'1',
+//     fmName:'Supphaset Engphaiboon',
+//     fmAge:25,
+//     fmBmi:'Unknown',
+//     icsiNo:'Unknown',
+//     typeGanad:'Unknown',
+//     startDose:'Unknown',
+//     durationSim:'Unknown',
+//     amhLv:'Unknown',
+//     fshBsLv:'Unknown',
+//     mHN:'unknown',
+//     mName:'Unknown',
+//     mAge:'Unknown',
+//     mBmi:'Unknown',
+//     tc:'Unknown',
+//     motility:'Unknown',
+//     pMotility:'Unknown',
+//     nMotility:'Unknown',
+//     remark:'Unknown',
+//     embryos:[
+//       {
+//         imgPath:'',
+//         imgId:'',
+//         imgName:'',
+//         viablity:'',
+//         stage:'',
+//         icm:'',
+//         te:''
+//       }
+//     ]
+//   },
+//   {
+//     fmHN: '2',
+//     ivfNo:'2',
+//     fmName:'Supphaset Engphaiboon',
+//     fmAge:25,
+//     fmBmi:'Unknown',
+//     icsiNo:'Unknown',
+//     typeGanad:'Unknown',
+//     startDose:'Unknown',
+//     durationSim:'Unknown',
+//     amhLv:'Unknown',
+//     fshBsLv:'Unknown',
+//     mHN:'unknown',
+//     mName:'Unknown',
+//     mAge:'Unknown',
+//     mBmi:'Unknown',
+//     tc:'Unknown',
+//     motility:'Unknown',
+//     pMotility:'Unknown',
+//     nMotility:'Unknown',
+//     remark:'Unknown',
+//     embryos:[]
+//   },
+//   {
+//     fmHN: '3',
+//     ivfNo:'3',
+//     fmName:'Supphaset Engphaiboon',
+//     fmAge:25,
+//     fmBmi:'Unknown',
+//     icsiNo:'Unknown',
+//     typeGanad:'Unknown',
+//     startDose:'Unknown',
+//     durationSim:'Unknown',
+//     amhLv:'Unknown',
+//     fshBsLv:'Unknown',
+//     mHN:'unknown',
+//     mName:'Unknown',
+//     mAge:'Unknown',
+//     mBmi:'Unknown',
+//     tc:'Unknown',
+//     motility:'Unknown',
+//     pMotility:'Unknown',
+//     nMotility:'Unknown',
+//     remark:'Unknown',
+//     embryos:[]
+//   },
+// ]
 
 const PatientInfo = () => {
   const {id} = useParams()
-  const patient = patients.find((p)=> p.fmHN === id)
+  const dispatch = useDispatch()
+
+  const patientDetail = useSelector((state) => state.patientDetail)
+  const { loading, error, patient } = patientDetail
 
   const [fmName, setFmName] = useState('')
   const [fmHN,setFmHN] = useState('')
@@ -110,34 +115,66 @@ const PatientInfo = () => {
   const [remark,setRemark] = useState('')
 
   useEffect(() =>{
-    setFmName(patient.fmName)
-    setFmHN(patient.fmHN)
-    setIvfNo(patient.ivfNo)
-    setFmAge(patient.fmAge)
-    setFmBmi(patient.fmBmi)
-    setIcsiNo(patient.icsiNo)
-    setTypeGanad(patient.typeGanad)
-    setStartDose(patient.startDose)
-    setDurationSim(patient.durationSim)
-    setAmhLv(patient.amhLv)
-    setFshBsLv(patient.fshBsLv)
-    setMHN(patient.mHN)
-    setMName(patient.mName)
-    setMAge(patient.mAge)
-    setMBmi(patient.mBmi)
-    setTc(patient.tc)
-    setMotility(patient.motility)
-    setPMotility(patient.pMotility)
-    setNMotility(patient.nMotility)
-    setRemark(patient.remark)
-  },[patient])
+    if (!patient.fmHN||patient.fmHN !== id) {
+      dispatch(listPatientsDetails(id))
+    }else{
+      setFmName(patient.fmName)
+      setFmHN(patient.fmHN)
+      setIvfNo(patient.ivfNo)
+      setFmAge(patient.fmAge)
+      setFmBmi(patient.fmBmi)
+      setIcsiNo(patient.icsiNo)
+      setTypeGanad(patient.typeGanad)
+      setStartDose(patient.startDose)
+      setDurationSim(patient.durationSim)
+      setAmhLv(patient.amhLv)
+      setFshBsLv(patient.fshBsLv)
+      setMHN(patient.mHN)
+      setMName(patient.mName)
+      setMAge(patient.mAge)
+      setMBmi(patient.mBmi)
+      setTc(patient.tc)
+      setMotility(patient.motility)
+      setPMotility(patient.pMotility)
+      setNMotility(patient.nMotility)
+      setRemark(patient.remark)
+    }
+  },[dispatch,patient])
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(
+      updatePatient({
+        fmName,
+        fmHN,
+        ivfNo,
+        fmAge,
+        fmBmi,
+        icsiNo,
+        typeGanad,
+        startDose,
+        durationSim,
+        amhLv,
+        fshBsLv,
+        mHN,
+        mName,
+        mAge,
+        mBmi,
+        tc,
+        motility,
+        pMotility,
+        nMotility,
+        remark
+      })
+    )
+  }
 
   return (
     <Col className='center-div '>
     <div className='patient-profile center-div'>
         <h4>Patient Information</h4>
         <div className='patient-info'>
-        <Form  >
+        <Form  id='editForm' onSubmit={submitHandler}>
             <h4>Female</h4>
             <Row className="mb-3">
             <Form.Group as={Col} xs={2} controlId="hospitalNo">
@@ -250,7 +287,7 @@ const PatientInfo = () => {
         </Form>
         </div>
     </div>
-    <Button variant="primary"> Edit Profile</Button>
+    <Button variant="primary" type='submit' form='editForm'> Edit Profile</Button>
     </Col>
   )
 }

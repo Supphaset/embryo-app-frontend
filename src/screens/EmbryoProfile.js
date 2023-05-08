@@ -4,6 +4,73 @@ import { Row, Col, Image, Button, Form } from 'react-bootstrap'
 import ProgressBar from '../components/ViabilityChart'
 import { useNavigate } from 'react-router-dom'
 
+const embryos = [
+      {
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
+        embryoId:'1_1',
+        viablity:82,
+        stage:'Blastocyst',
+        icm:'Good',
+        te:'Good',
+        pStage:'Blastocyst',
+        pIcm:'Good',
+        pTe:'Good',
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
+      },
+        {
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
+        embryoId:'2_1',
+        viablity:82,
+        stage:'Blastocyst',
+        icm:'Good',
+        te:'Good',
+        pStage:'Blastocyst',
+        pIcm:'Good',
+        pTe:'Good',
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
+      },
+      {
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
+        embryoId:'2_2',
+        viablity:85,
+        stage:'',
+        icm:'',
+        te:'',
+        pStage:'Blastocyst',
+        pIcm:'Good',
+        pTe:'Good',
+        patientId:'1',
+        transfered:true,
+        transferedImage:'',
+        success:'Success'
+      },
+      {
+        imgPath:'/embryo-app-frontend/images/embryo_img.png',
+        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
+        embryoId:'2_3',
+        viablity:23,
+        stage:'',
+        icm:'',
+        te:'',
+        pStage:'Blastocyst',
+        pIcm:'Poor',
+        pTe:'Poor',
+        patientId:'1',
+        transfered:false,
+        transferedImage:'',
+        success:''
+      }
+    ]
+
 const patients = [
   {
     hospitalNo: '1',
@@ -64,7 +131,7 @@ const patients = [
         {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'1',
+        embryoId:'2_1',
         viablity:82,
         stage:'Blastocyst',
         icm:'Good',
@@ -80,7 +147,7 @@ const patients = [
       {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2',
+        embryoId:'2_2',
         viablity:85,
         stage:'',
         icm:'',
@@ -96,7 +163,7 @@ const patients = [
       {
         imgPath:'/embryo-app-frontend/images/embryo_img.png',
         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'3',
+        embryoId:'2_3',
         viablity:23,
         stage:'',
         icm:'',
@@ -140,13 +207,14 @@ const EmbryoProfile = () => {
   function handleClick(path) {
     nevigate(path);
   }
-
-  const {patientid, embryoid} = useParams()
-  const embryos = patients.find((p)=> p.hospitalNo === patientid).embryos
-  const embryo = embryos.find((e)=> e.embryoId === embryoid)
+  const embryoId = 1
+  const {embryoNo,patientHN} = useParams()
+  // const embryos = []
+  const embryo = embryos.find((e)=> e.embryoId === embryoId)
   const [isEdit,setIsEdit] = useState(false)
+
+  console.log(embryos)
   console.log(embryo)
-  console.log(isEdit)
 
   return (
     <>
@@ -218,7 +286,7 @@ const EmbryoProfile = () => {
                 }
                 </div>
                 <div className='my-3'>
-                    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${patientid}`)}>Patient Profile</Button>
+                    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${embryo.patientId}`)}>Patient Profile</Button>
                 </div>
             </Col>
             <Col className='embryoPred'>

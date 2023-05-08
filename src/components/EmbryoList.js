@@ -1,7 +1,9 @@
 import React from 'react'
-import { Row, Col, Button, ListGroup, Image} from 'react-bootstrap'
+import { Row, Col, Button, ListGroup, Image, ButtonGroup} from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
-import {Delete, AddCircle, DoDisturbOn} from '@mui/icons-material'
+import {Delete, AddCircle, DoDisturbOn, Block, Undo} from '@mui/icons-material'
+import { useDispatch } from 'react-redux'
+import { deleteEmbryo, updateEmbryoStatus } from '../actions/embryoActions'
 
 const patients = [
   {
@@ -33,7 +35,7 @@ const patients = [
         stage:'Blastocyst',
         icm:'Good',
         te:'Good',
-        transfered:true,
+        status:'transfered',
         transferedImage:'/embryo-app-frontend/images/embryo_img.png',
         success:''
       }
@@ -72,7 +74,7 @@ const patients = [
         pIcm:'Good',
         pTe:'Good',
         patientId:'1',
-        transfered:false,
+        status:'freeze',
         transferedImage:'',
         success:''
       },
@@ -88,7 +90,7 @@ const patients = [
         pIcm:'Good',
         pTe:'Good',
         patientId:'1',
-        transfered:true,
+        status:'transfered',
         transferedImage:'',
         success:'Success'
       },
@@ -104,7 +106,7 @@ const patients = [
         pIcm:'Poor',
         pTe:'Poor',
         patientId:'1',
-        transfered:false,
+        status:'discarded',
         transferedImage:'',
         success:''
       }
@@ -138,8 +140,9 @@ const EmbryoList = () => {
 
   const {id} = useParams()
   const embryos = patients.find((p)=> p.hospitalNo === id).embryos.sort((a,b) => b.viablity - a.viablity)
-  const embryosList = embryos.filter((e)=> !e.transfered)
-  const embryosTransfered = embryos.filter((e)=> e.transfered)
+  const embryosList = embryos.filter((e)=> e.status === 'freeze')
+  const embryosTransfered = embryos.filter((e)=> e.status === 'transfered')
+  const embryosDiscared = embryos.filter((e)=> e.status === 'discarded')
   const nevigate = useNavigate();
   function handleClick(path) {
     nevigate(path);
@@ -147,30 +150,42 @@ const EmbryoList = () => {
 
   return (
     <Col className='center-div'>
-        <EmbryoListComponent embryosList={embryosList} transfered={false} id={id}/>
+        <EmbryoListComponent embryosList={embryosList} embryoStatus={'Embryo'} id={id}/>
         <Button onClick={() => handleClick(`/embryo-app-frontend/embryoform/${id}`)} variant="primary" className="">Add Embryo</Button>
-        <EmbryoListComponent embryosList={embryosTransfered} transfered={true} id={id}/>
+        <EmbryoListComponent embryosList={embryosTransfered} embryoStatus={'Transfered Embryo'} id={id}/>
+        <EmbryoListComponent embryosList={embryosDiscared} embryoStatus={'Discarded Embryo'} id={id}/>
     </Col>
   )
 }
 
 const EmbryoListComponent = (props) =>{
+  const dispatch = useDispatch();
   const nevigate = useNavigate();
   function handleClick(path) {
     nevigate(path);
   }
   const id = props.id
+
+  const statusHandler = (embryoId,embryoStatus) => {
+    dispatch(updateEmbryoStatus(embryoId,embryoStatus))
+  }
+
+  const deleteHandler = (embryoId) => {
+    if (window.confirm('Are you sure')) {
+      dispatch(deleteEmbryo(embryoId))
+    }
+  }
   
   return (
     <div className='patient-profile center-div'>
           <h4>
-            {props.transfered=== false ? 'Embryo' : 'Transfered Embryo'}
+            {props.embryoStatus}
           </h4>
           <ListGroup>
             {props.embryosList.map((embryo)=>(
-              <Row>
+              <Row >
                 <Col>
-              <ListGroup.Item action onClick={() => handleClick(`/embryo-app-frontend/embryo/${id}/${embryo.embryoId}`)}>
+              <ListGroup.Item action onClick={() => handleClick(`/embryo-app-frontend/embryo/${embryo.embryoId}`)}>
                 <Row>
                   <Col md={4}>
                       <Image src={embryo.imgPath} alt={embryo.imgName} fluid rounded/>
@@ -209,23 +224,34 @@ const EmbryoListComponent = (props) =>{
                 </Row>
               </ListGroup.Item>
               </Col>
-              <Col md={1}>
+              <Col md={2}>
+                <ButtonGroup vertical className='verticalbtn'>
                 {
-                  embryo.transfered=== false ?
-                  <Button type='button' variant='success' className='delete' >
-                    <AddCircle/>
+                  embryo.status=== 'discarded' ?
+                  <Button type='button' variant='light' onClick={() => statusHandler(embryo.embryoId,'discarded')} >
+                    <Undo/>
                   </Button>
                   :
-                  <Button type='button' variant='light' className='delete' >
-                    <DoDisturbOn/>
+                  <Button type='button' variant='warning' onClick={() => statusHandler(embryo.embryoId,'discarded')} >
+                    <Block/>
+                  </Button>                 
+                }
+
+                {
+                  embryo.status=== 'transfered' ?
+                  <Button type='button' variant='light' onClick={() => statusHandler(embryo.embryoId,'transfered')} >
+                    <Undo/>
+                  </Button>
+                  :
+                  <Button type='button' variant='success' onClick={() => statusHandler(embryo.embryoId,'transfered')} >
+                    <AddCircle/>
                   </Button>
                 }
-                
-              </Col>
-              <Col md={1}>
-                <Button type='button' variant='danger' className='delete' >
+
+                <Button type='button' variant='danger' onClick={() => deleteHandler(embryo.embryoId)}>
                   <Delete/>
                 </Button>
+                </ButtonGroup>
               </Col>
             </Row>
             ))}
