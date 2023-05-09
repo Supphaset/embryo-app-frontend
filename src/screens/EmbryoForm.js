@@ -6,6 +6,7 @@ import { createEmbryo } from '../actions/embryoActions';
 import { EMBRYO_CREATE_RESET } from '../constants/embryoConstants';
 import AWS from 'aws-sdk'
 import { listPatientsDetails } from '../actions/patientActions';
+import Spinner from 'react-bootstrap/Spinner'
 
 AWS.config.update({
   accessKeyId: 'AKIAQ564KCCVNAOD3ZOK',
@@ -45,7 +46,7 @@ const EmbryoForm = () => {
   useEffect(() => {
     if (successCreate){
       dispatch({type: EMBRYO_CREATE_RESET})
-      // nevigate(`/embryo-app-frontend/embryo/${patientHN}_${embryoNo}`)
+      nevigate(`/embryo-app-frontend/embryo/${patientHN}/${embryoNo}`)
     }else if(!patient.fmHN||patient.fmHN !== patientHN) {
       dispatch(listPatientsDetails(patientHN))
     }else{
@@ -122,11 +123,16 @@ const EmbryoForm = () => {
         </Col>
       </Row>
       <div className="d-grid gap-2 formbt">
-        <Button variant="primary" type="submit" >Submit</Button>
+        { loadingCreate ?
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+        : <Button variant="primary" type="submit" >Submit</Button>
+        }
       </div>
     </Form>
     </div>
-    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${patientHN}`)}>Patient Profile</Button>
+     <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${patientHN}`)}>Patient Profile</Button>
     </div>
   )
 }

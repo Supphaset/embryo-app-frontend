@@ -46,7 +46,7 @@ import {
  export const listEmbryosDetails = (patientHN,embryoNo) => async(dispatch) =>{
     try {
         dispatch({type:EMBRYO_DETAIL_REQUEST})
-        const {data} = await axios.get(`${api}/embryo/${patientHN}/${embryoNo}`)
+        const {data} = await axios.get(`${api}/embryos/${patientHN}/${embryoNo}`)
         dispatch({
             type: EMBRYO_DETAIL_SUCCESS,
             payload: data
@@ -68,7 +68,7 @@ import {
       type: EMBRYO_DELETE_REQUEST,
     })
 
-    await axios.delete(`${api}/embryo/${patientHN}/${embryoNo}`)
+    await axios.delete(`${api}/embryos/${patientHN}/${embryoNo}`)
 
     dispatch({
       type: EMBRYO_DELETE_SUCCESS,
@@ -88,8 +88,6 @@ import {
 export const createEmbryo = (embryo) => async (dispatch) => {
   try {
     const predictInput = {'img_path':embryo.embryoImg, 'age':embryo.patientAge}
-    console.log(predictInput)
-    console.log('predict')
     dispatch({
       type: EMBRYO_CREATE_REQUEST,
     })
@@ -97,13 +95,6 @@ export const createEmbryo = (embryo) => async (dispatch) => {
       `${api}/embryos`,
       predictInput
     )
-    console.log({ ...embryo,
-      viablity:prediction.data['score'],
-      pStage:prediction.data['stage_output'],
-      pIcm:prediction.data['icm_output'],
-      pTe:prediction.data['te_output'],
-      imgGradPath:`${embryo.embryoImg}_grad.jpg`,
-    })
     const { data } = await axios.put(
       `${api}/embryos/${embryo.patientId}`,
      { ...embryo,
@@ -136,15 +127,10 @@ export const updateEmbryoStatus = (patientHN,embryoNo,embryoStatus) => async (di
       type: EMBRYO_UPDATE_STATUS_REQUEST,
     })
     
-    const { data } = await axios.put(`${api}/embryo/${patientHN}/${embryoNo}/status`,{embryoStatus},)
+    const { data } = await axios.put(`${api}/embryos/${patientHN}/${embryoNo}/status`,{embryoStatus})
 
     dispatch({
       type: EMBRYO_UPDATE_STATUS_SUCCESS,
-    })
-
-    dispatch({
-        type: EMBRYO_LIST_SUCCESS,
-        payload: data
     })
 
   } catch (error) {

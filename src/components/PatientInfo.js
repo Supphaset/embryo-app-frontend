@@ -4,90 +4,8 @@ import { Row,Col, Button,Form} from 'react-bootstrap'
 import { listPatientsDetails, updatePatient } from '../actions/patientActions'
 import { useDispatch, useSelector } from 'react-redux'
 
-// const patients = [
-//   {
-//     fmHN: '1',
-//     ivfNo:'1',
-//     fmName:'Supphaset Engphaiboon',
-//     fmAge:25,
-//     fmBmi:'Unknown',
-//     icsiNo:'Unknown',
-//     typeGanad:'Unknown',
-//     startDose:'Unknown',
-//     durationSim:'Unknown',
-//     amhLv:'Unknown',
-//     fshBsLv:'Unknown',
-//     mHN:'unknown',
-//     mName:'Unknown',
-//     mAge:'Unknown',
-//     mBmi:'Unknown',
-//     tc:'Unknown',
-//     motility:'Unknown',
-//     pMotility:'Unknown',
-//     nMotility:'Unknown',
-//     remark:'Unknown',
-//     embryos:[
-//       {
-//         imgPath:'',
-//         imgId:'',
-//         imgName:'',
-//         viablity:'',
-//         stage:'',
-//         icm:'',
-//         te:''
-//       }
-//     ]
-//   },
-//   {
-//     fmHN: '2',
-//     ivfNo:'2',
-//     fmName:'Supphaset Engphaiboon',
-//     fmAge:25,
-//     fmBmi:'Unknown',
-//     icsiNo:'Unknown',
-//     typeGanad:'Unknown',
-//     startDose:'Unknown',
-//     durationSim:'Unknown',
-//     amhLv:'Unknown',
-//     fshBsLv:'Unknown',
-//     mHN:'unknown',
-//     mName:'Unknown',
-//     mAge:'Unknown',
-//     mBmi:'Unknown',
-//     tc:'Unknown',
-//     motility:'Unknown',
-//     pMotility:'Unknown',
-//     nMotility:'Unknown',
-//     remark:'Unknown',
-//     embryos:[]
-//   },
-//   {
-//     fmHN: '3',
-//     ivfNo:'3',
-//     fmName:'Supphaset Engphaiboon',
-//     fmAge:25,
-//     fmBmi:'Unknown',
-//     icsiNo:'Unknown',
-//     typeGanad:'Unknown',
-//     startDose:'Unknown',
-//     durationSim:'Unknown',
-//     amhLv:'Unknown',
-//     fshBsLv:'Unknown',
-//     mHN:'unknown',
-//     mName:'Unknown',
-//     mAge:'Unknown',
-//     mBmi:'Unknown',
-//     tc:'Unknown',
-//     motility:'Unknown',
-//     pMotility:'Unknown',
-//     nMotility:'Unknown',
-//     remark:'Unknown',
-//     embryos:[]
-//   },
-// ]
-
 const PatientInfo = () => {
-  const {id} = useParams()
+  const {patientHN} = useParams()
   const dispatch = useDispatch()
 
   const patientDetail = useSelector((state) => state.patientDetail)
@@ -115,8 +33,8 @@ const PatientInfo = () => {
   const [remark,setRemark] = useState('')
 
   useEffect(() =>{
-    if (!patient.fmHN||patient.fmHN !== id) {
-      dispatch(listPatientsDetails(id))
+    if (!patient.fmHN||patient.fmHN !== patientHN) {
+      dispatch(listPatientsDetails(patientHN))
     }else{
       setFmName(patient.fmName)
       setFmHN(patient.fmHN)

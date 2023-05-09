@@ -3,218 +3,29 @@ import { useParams } from 'react-router-dom'
 import { Row, Col, Image, Button, Form } from 'react-bootstrap'
 import ProgressBar from '../components/ViabilityChart'
 import { useNavigate } from 'react-router-dom'
-
-const embryos = [
-      {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'1_1',
-        viablity:82,
-        stage:'Blastocyst',
-        icm:'Good',
-        te:'Good',
-        pStage:'Blastocyst',
-        pIcm:'Good',
-        pTe:'Good',
-        patientId:'1',
-        transfered:false,
-        transferedImage:'',
-        success:''
-      },
-        {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2_1',
-        viablity:82,
-        stage:'Blastocyst',
-        icm:'Good',
-        te:'Good',
-        pStage:'Blastocyst',
-        pIcm:'Good',
-        pTe:'Good',
-        patientId:'1',
-        transfered:false,
-        transferedImage:'',
-        success:''
-      },
-      {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2_2',
-        viablity:85,
-        stage:'',
-        icm:'',
-        te:'',
-        pStage:'Blastocyst',
-        pIcm:'Good',
-        pTe:'Good',
-        patientId:'1',
-        transfered:true,
-        transferedImage:'',
-        success:'Success'
-      },
-      {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2_3',
-        viablity:23,
-        stage:'',
-        icm:'',
-        te:'',
-        pStage:'Blastocyst',
-        pIcm:'Poor',
-        pTe:'Poor',
-        patientId:'1',
-        transfered:false,
-        transferedImage:'',
-        success:''
-      }
-    ]
-
-const patients = [
-  {
-    hospitalNo: '1',
-    ivfNo:'1',
-    fmName:'Supphaset Engphaiboon',
-    fmAge:25,
-    fmBmi:'Unknown',
-    icsiNo:'Unknown',
-    typeGanad:'Unknown',
-    startDose:'Unknown',
-    durationSim:'Unknown',
-    amhLv:'Unknown',
-    fshBsLv:'Unknown',
-    mName:'Unknown',
-    mAge:'Unknown',
-    mBmi:'Unknown',
-    tc:'Unknown',
-    motility:'Unknown',
-    pMotility:'Unknown',
-    nMotility:'Unknown',
-    semenAnalysis:'Unknown',
-    embryos:[
-      {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'1',
-        viablity:87,
-        stage:'Blastocyst',
-        icm:'Good',
-        te:'Good',
-        transfered:true,
-        transferedImage:'/embryo-app-frontend/images/embryo_img.png',
-        success:''
-      }
-    ]
-  },
-  {
-    hospitalNo: '2',
-    ivfNo:'2',
-    fmName:'Supphaset Engphaiboon',
-    fmAge:25,
-    fmBmi:'Unknown',
-    icsiNo:'Unknown',
-    typeGanad:'Unknown',
-    startDose:'Unknown',
-    durationSim:'Unknown',
-    amhLv:'Unknown',
-    fshBsLv:'Unknown',
-    mName:'Unknown',
-    mAge:'Unknown',
-    mBmi:'Unknown',
-    tc:'Unknown',
-    motility:'Unknown',
-    pMotility:'Unknown',
-    nMotility:'Unknown',
-    semenAnalysis:'Unknown',
-    embryos:[
-        {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2_1',
-        viablity:82,
-        stage:'Blastocyst',
-        icm:'Good',
-        te:'Good',
-        pStage:'Blastocyst',
-        pIcm:'Good',
-        pTe:'Good',
-        patientId:'1',
-        transfered:false,
-        transferedImage:'',
-        success:''
-      },
-      {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2_2',
-        viablity:85,
-        stage:'',
-        icm:'',
-        te:'',
-        pStage:'Blastocyst',
-        pIcm:'Good',
-        pTe:'Good',
-        patientId:'1',
-        transfered:true,
-        transferedImage:'',
-        success:'Success'
-      },
-      {
-        imgPath:'/embryo-app-frontend/images/embryo_img.png',
-        imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-        embryoId:'2_3',
-        viablity:23,
-        stage:'',
-        icm:'',
-        te:'',
-        pStage:'Blastocyst',
-        pIcm:'Poor',
-        pTe:'Poor',
-        patientId:'1',
-        transfered:false,
-        transferedImage:'',
-        success:''
-      }
-    ]
-  },
-  {
-    hospitalNo: '3',
-    ivfNo:'3',
-    fmName:'Supphaset Engphaiboon',
-    fmAge:25,
-    fmBmi:'Unknown',
-    icsiNo:'Unknown',
-    typeGanad:'Unknown',
-    startDose:'Unknown',
-    durationSim:'Unknown',
-    amhLv:'Unknown',
-    fshBsLv:'Unknown',
-    mName:'Unknown',
-    mAge:'Unknown',
-    mBmi:'Unknown',
-    tc:'Unknown',
-    motility:'Unknown',
-    pMotility:'Unknown',
-    nMotility:'Unknown',
-    semenAnalysis:'Unknown',
-    embryos:[]
-  },
-]
+import { useDispatch, useSelector } from 'react-redux'
+import { listEmbryosDetails } from '../actions/embryoActions'
 
 const EmbryoProfile = () => {
   const nevigate = useNavigate();
+  const dispatch = useDispatch();
   function handleClick(path) {
     nevigate(path);
   }
-  const embryoId = 1
+  const s3Bucket = 'https://embryos-project-s3.s3.ap-southeast-2.amazonaws.com/'
   const {embryoNo,patientHN} = useParams()
-  // const embryos = []
-  const embryo = embryos.find((e)=> e.embryoId === embryoId)
+  
   const [isEdit,setIsEdit] = useState(false)
 
-  console.log(embryos)
-  console.log(embryo)
+  const embryoDetail = useSelector((state) => state.embryoDetail)
+  const { loading, error, embryo } = embryoDetail
+
+  useEffect(() =>{
+    if (!embryo.embryoNo||embryo.embryoNo!==embryoNo||embryo.patientHN!==patientHN) {
+      dispatch(listEmbryosDetails(patientHN,embryoNo))
+    }
+  },[dispatch,embryo,embryoNo,patientHN])
+
 
   return (
     <>
@@ -224,7 +35,7 @@ const EmbryoProfile = () => {
                 <Row>
                 <h4>Embryo Information</h4>
                 <div className='div-embryoInfo'>
-                    <Image src={embryo.imgPath} alt={embryo.imgName} fluid rounded width="50%"/>
+                    <Image src={`${s3Bucket}${embryo.embryoImg}`} alt={embryo.embryoNo} fluid rounded width="50%"/>
                 </div>
                 </Row>
                 <Row>
@@ -232,15 +43,18 @@ const EmbryoProfile = () => {
                     <Col>{embryo.icm !== '' ? <div className='div-embryoInfotext'><h6>ICM</h6><p>{embryo.icm}</p></div>: null}</Col>
                     <Col>{embryo.te !== '' ? <div className='div-embryoInfotext'><h6>TE</h6><p>{embryo.te}</p></div>: null}</Col>
                 </Row>
-                {
-                  embryo.transfered===true ?
+                {/* {
+                  embryo.embryoStatus==='transfered' ?
                   <>
                     <Row className='my-3' >
                       <h4>Transfered Information</h4>
                     </Row>
                     {
-                      embryo.transferedImage === '' ?
-                      <Row>
+                      embryo.embryoTransferedImg ?
+                      <div className='div-embryoInfo'>
+                          <Image src={embryo.transferedImage} alt='transfered embryo image' fluid rounded width="50%"/>
+                      </div>
+                      : <Row>
                         <Form>
                           <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Transfered Embryo Image</Form.Label>
@@ -248,12 +62,10 @@ const EmbryoProfile = () => {
                           </Form.Group>
                           <Button variant="primary" type="submit" >Submit</Button>
                         </Form>
-                      </Row>: <div className='div-embryoInfo'>
-                          <Image src={embryo.transferedImage} alt='transfered embryo image' fluid rounded width="50%"/>
-                      </div>
+                      </Row>
                     }
                     {
-                      embryo.success === '' | isEdit?
+                      embryo.success === '' || isEdit?
                       <Row className='my-3'>
                         <Col>
                           <h6>Embryo Status:</h6>
@@ -283,24 +95,24 @@ const EmbryoProfile = () => {
                       </div>
                     }
                   </>:<></>
-                }
+                } */}
                 </div>
                 <div className='my-3'>
-                    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${embryo.patientId}`)}>Patient Profile</Button>
+                    <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${embryo.patientHN}`)}>Patient Profile</Button>
                 </div>
             </Col>
             <Col className='embryoPred'>
                 <Row>
                 
                 <div className='div-embryoInfo'>
-                    <Image src={embryo.imgGradPath} alt='Grad Cam Image' fluid rounded width="50%"/>
+                    <Image src={`${s3Bucket}${embryo.embryoGradImg}`} alt='Grad Cam Image' fluid rounded width="50%"/>
                     <h6 className='embryoPredh'>Grad Cam Image</h6>
                 </div>
                 </Row>
                 <h5 className='embryoPredh'>Prediction Result</h5>
                 <Row className='div-embryoInfotext'>
                     <h6 >Viablity</h6>
-                    <ProgressBar  value={embryo.viablity*0.01}/>
+                    <ProgressBar  value={embryo.viability}/>
                     <Row className='my-3'>
                         <Col className='pred-val'>
                             <h6>Stage</h6>

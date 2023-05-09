@@ -24,31 +24,31 @@ import {
     EMBRYO_UPDATE_TRANSFERED_IMAGE_FAIL
  } from '../constants/embryoConstants'
 
-export const embryoListReducer = (state = { embryos: [] }, action) => {
+export const embryoListReducer = (state = { embryosList: [], embryosTransfered: [], embryosDiscared: []}, action) => {
     switch(action.type){
         case EMBRYO_LIST_REQUEST:
-            return { loading: true, embryos: []}
+            return { loading: true, embryosList: [], embryosTransfered: [], embryosDiscared: []}
         case EMBRYO_LIST_SUCCESS:
-            const embryos = action.payload.sort((a,b) => b.viablity - a.viablity)
-            const embryosList = embryos.filter((e)=> e.status === 'freeze')
-            const embryosTransfered = embryos.filter((e)=> e.status === 'transfered')
-            const embryosDiscared = embryos.filter((e)=> e.status === 'discarded')
-            return { loading: false, embryos: embryosList, embryosTransfered: embryosTransfered, embryosDiscared: embryosDiscared}
+            const embryos = action.payload.sort((a,b) => b.viability - a.viability)
+            const embryosList = embryos.filter((e)=> e.embryoStatus === 'freeze')
+            const embryosTransfered = embryos.filter((e)=> e.embryoStatus === 'transfered')
+            const embryosDiscared = embryos.filter((e)=> e.embryoStatus === 'discarded')
+            return { loading: false, embryosList: embryosList, embryosTransfered: embryosTransfered, embryosDiscared: embryosDiscared}
         case EMBRYO_LIST_FAIL:
-            return { loading: false, error: action.payload}
+            return { ...state,loading: false, error: action.payload}
         default:
             return state
     }
 }
 
-export const embryoDetailsReducer = ( state = {}, action ) => {
+export const embryoDetailsReducer = ( state = { embryo:{} }, action ) => {
   switch (action.type) {
     case EMBRYO_DETAIL_REQUEST:
       return { ...state, loading: true }
     case EMBRYO_DETAIL_SUCCESS:
-      return { loading: false, product: action.payload }
+      return { loading: false, embryo: action.payload }
     case EMBRYO_DETAIL_FAIL:
-      return { loading: false, error: action.payload }
+      return { ...state, loading: false, error: action.payload }
     default:
       return state
   }
@@ -84,7 +84,7 @@ export const embryoCreateReducer = (state = { }, action) => {
   }
 }
 
-export const embryoUpdateStatusReducer = (state = { embryo: {} }, action) => {
+export const embryoUpdateStatusReducer = (state = { }, action) => {
   switch (action.type) {
     case EMBRYO_UPDATE_STATUS_REQUEST:
       return { loading: true }
