@@ -4,7 +4,8 @@ import { Row, Col, Image, Button, Form } from 'react-bootstrap'
 import ProgressBar from '../components/ViabilityChart'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { listEmbryosDetails } from '../actions/embryoActions'
+import { listEmbryosDetails, updateEmbryoSuccess, updateEmbryoTransferedImage } from '../actions/embryoActions'
+import AWS from 'aws-sdk'
 
 const EmbryoProfile = () => {
   const nevigate = useNavigate();
@@ -14,8 +15,11 @@ const EmbryoProfile = () => {
   }
   const s3Bucket = 'https://embryos-project-s3.s3.ap-southeast-2.amazonaws.com/'
   const {embryoNo,patientHN} = useParams()
+  const s3 = new AWS.S3();
   
   const [isEdit,setIsEdit] = useState(false)
+  const [file,setFile] = useState(null)
+  const [embryoSuccess,setEmbryoSuccess] = useState('')
 
   const embryoDetail = useSelector((state) => state.embryoDetail)
   const { loading, error, embryo } = embryoDetail
@@ -26,6 +30,46 @@ const EmbryoProfile = () => {
     }
   },[dispatch,embryo,embryoNo,patientHN])
 
+  const uploadToS3 = async () => {
+    if (!file) {
+      return;
+    }
+    const params = { 
+      Bucket: 'embryos-project-s3', 
+      Key: `${patientHN}_${embryoNo}_transfered.${file.name.split('.').pop()}`, 
+      Body: file 
+    };
+    const { Location } = await s3.upload(params).promise();
+    console.log('uploading to s3', Location);
+    dispatch(
+      updateEmbryoTransferedImage(
+        embryo.patientHN,
+        embryo.embryoNo,
+        `${patientHN}_${embryoNo}_transfered.${file.name.split('.').pop()}`
+      )
+    )
+  }
+
+  const handleFileInput = (e) => {
+      setFile(e.target.files[0]);
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    uploadToS3()
+  }
+
+  const submitSuccess = (e) =>{
+    e.preventDefault()
+    dispatch(
+      updateEmbryoSuccess(
+        embryo.patientHN,
+        embryo.embryoNo,
+        embryoSuccess
+      )
+    )
+    setIsEdit(false)
+  }
 
   return (
     <>
@@ -43,20 +87,20 @@ const EmbryoProfile = () => {
                     <Col>{embryo.icm !== '' ? <div className='div-embryoInfotext'><h6>ICM</h6><p>{embryo.icm}</p></div>: null}</Col>
                     <Col>{embryo.te !== '' ? <div className='div-embryoInfotext'><h6>TE</h6><p>{embryo.te}</p></div>: null}</Col>
                 </Row>
-                {/* {
+                {
                   embryo.embryoStatus==='transfered' ?
                   <>
                     <Row className='my-3' >
                       <h4>Transfered Information</h4>
                     </Row>
                     {
-                      embryo.embryoTransferedImg ?
+                      embryo.embryoTransferedImg !== "" ?
                       <div className='div-embryoInfo'>
-                          <Image src={embryo.transferedImage} alt='transfered embryo image' fluid rounded width="50%"/>
+                          <Image src={`${s3Bucket}${embryo.embryoTransferedImg}`} alt='transfered embryo image' fluid rounded width="50%"/>
                       </div>
                       : <Row>
-                        <Form>
-                          <Form.Group controlId="formFile" className="mb-3">
+                        <Form onSubmit={submitHandler}>
+                          <Form.Group controlId="formFile" className="mb-3" onChange={handleFileInput}>
                             <Form.Label>Transfered Embryo Image</Form.Label>
                             <Form.Control type="file" />
                           </Form.Group>
@@ -65,28 +109,33 @@ const EmbryoProfile = () => {
                       </Row>
                     }
                     {
-                      embryo.success === '' || isEdit?
+                      embryo.embryoSuccess === '' || isEdit?
                       <Row className='my-3'>
                         <Col>
                           <h6>Embryo Status:</h6>
                         </Col>
+                        <Form onSubmit={submitSuccess}>
                         <Col>
-                          <Form.Select size='sm'>
+                          <Form.Select size='sm' value={embryoSuccess}
+                            onChange={e => {
+                              setEmbryoSuccess(e.target.value);
+                            }}>
                             <option></option>
-                            <option value="success">Success</option>
-                            <option value="fail">Fail</option>
+                            <option value="success" >Success</option>
+                            <option value="fail" >Fail</option>
                           </Form.Select>
                         </Col>
                         <Col>
-                          <Button variant="primary" onClick={()=>setIsEdit(false)}>Submit</Button>
+                          <Button variant="primary" type='submit'>Submit</Button>
                         </Col>
+                        </Form>
                       </Row>:<div className='div-embryoInfo my-3'>
                       <Row className='my-3 left'>
                         <Col>
                           <h6>Embryo Status:</h6>
                         </Col>
                         <Col>
-                          <p>{embryo.success}</p>
+                          <p>{embryo.embryoSuccess}</p>
                         </Col>
                         <Col>
                           <Button variant="light" onClick={()=>setIsEdit(true)}>Edit</Button>
@@ -95,7 +144,7 @@ const EmbryoProfile = () => {
                       </div>
                     }
                   </>:<></>
-                } */}
+                }
                 </div>
                 <div className='my-3'>
                     <Button onClick={() => handleClick(`/embryo-app-frontend/patient/${embryo.patientHN}`)}>Patient Profile</Button>

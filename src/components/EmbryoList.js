@@ -4,137 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {Delete, AddCircle, Block, Undo} from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteEmbryo, listEmbryos, updateEmbryoStatus } from '../actions/embryoActions'
+import AWS from 'aws-sdk'
+import { EMBRYO_DETAIL_RESET } from '../constants/embryoConstants'
 
-// const patients = [
-//   {
-//     hospitalNo: '1',
-//     ivfNo:'1',
-//     fmName:'Supphaset Engphaiboon',
-//     fmAge:25,
-//     fmBmi:'Unknown',
-//     icsiNo:'Unknown',
-//     typeGanad:'Unknown',
-//     startDose:'Unknown',
-//     durationSim:'Unknown',
-//     amhLv:'Unknown',
-//     fshBsLv:'Unknown',
-//     mName:'Unknown',
-//     mAge:'Unknown',
-//     mBmi:'Unknown',
-//     tc:'Unknown',
-//     motility:'Unknown',
-//     pMotility:'Unknown',
-//     nMotility:'Unknown',
-//     semenAnalysis:'Unknown',
-//     embryos:[
-//       {
-//         imgPath:'/embryo-app-frontend/images/embryo_img.png',
-//         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-//         embryoId:'1',
-//         viablity:87,
-//         stage:'Blastocyst',
-//         icm:'Good',
-//         te:'Good',
-//         status:'transfered',
-//         transferedImage:'/embryo-app-frontend/images/embryo_img.png',
-//         success:''
-//       }
-//     ]
-//   },
-//   {
-//     hospitalNo: '2',
-//     ivfNo:'2',
-//     fmName:'Supphaset Engphaiboon',
-//     fmAge:25,
-//     fmBmi:'Unknown',
-//     icsiNo:'Unknown',
-//     typeGanad:'Unknown',
-//     startDose:'Unknown',
-//     durationSim:'Unknown',
-//     amhLv:'Unknown',
-//     fshBsLv:'Unknown',
-//     mName:'Unknown',
-//     mAge:'Unknown',
-//     mBmi:'Unknown',
-//     tc:'Unknown',
-//     motility:'Unknown',
-//     pMotility:'Unknown',
-//     nMotility:'Unknown',
-//     semenAnalysis:'Unknown',
-//     embryos:[
-//         {
-//         imgPath:'/embryo-app-frontend/images/embryo_img.png',
-//         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-//         embryoId:'1',
-//         viablity:82,
-//         stage:'Blastocyst',
-//         icm:'Good',
-//         te:'Good',
-//         pStage:'Blastocyst',
-//         pIcm:'Good',
-//         pTe:'Good',
-//         patientId:'1',
-//         status:'freeze',
-//         transferedImage:'',
-//         success:''
-//       },
-//       {
-//         imgPath:'/embryo-app-frontend/images/embryo_img.png',
-//         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-//         embryoId:'2',
-//         viablity:85,
-//         stage:'',
-//         icm:'',
-//         te:'',
-//         pStage:'Blastocyst',
-//         pIcm:'Good',
-//         pTe:'Good',
-//         patientId:'1',
-//         status:'transfered',
-//         transferedImage:'',
-//         success:'Success'
-//       },
-//       {
-//         imgPath:'/embryo-app-frontend/images/embryo_img.png',
-//         imgGradPath:'/embryo-app-frontend/images/grad_cam_img.png',
-//         embryoId:'3',
-//         viablity:23,
-//         stage:'',
-//         icm:'',
-//         te:'',
-//         pStage:'Blastocyst',
-//         pIcm:'Poor',
-//         pTe:'Poor',
-//         patientId:'1',
-//         status:'discarded',
-//         transferedImage:'',
-//         success:''
-//       }
-//     ]
-//   },
-//   {
-//     hospitalNo: '3',
-//     ivfNo:'3',
-//     fmName:'Supphaset Engphaiboon',
-//     fmAge:25,
-//     fmBmi:'Unknown',
-//     icsiNo:'Unknown',
-//     typeGanad:'Unknown',
-//     startDose:'Unknown',
-//     durationSim:'Unknown',
-//     amhLv:'Unknown',
-//     fshBsLv:'Unknown',
-//     mName:'Unknown',
-//     mAge:'Unknown',
-//     mBmi:'Unknown',
-//     tc:'Unknown',
-//     motility:'Unknown',
-//     pMotility:'Unknown',
-//     nMotility:'Unknown',
-//     semenAnalysis:'Unknown',
-//     embryos:[]
-//   },
-// ]
+AWS.config.update({
+  accessKeyId: 'AKIAQ564KCCVNAOD3ZOK',
+  secretAccessKey: '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',
+  region: 'ap-southeast-2',
+  signatureVersion: 'v4',
+});
 
 const EmbryoList = () => {
   const dispatch = useDispatch()
@@ -147,11 +25,16 @@ const EmbryoList = () => {
   const embryosStatus = useSelector((state)=>state.embryoStatus)
   const { success } = embryosStatus
 
+  const embryoDelete = useSelector((state) => state.embryoDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = embryoDelete
+
   useEffect(()=>{
     dispatch(listEmbryos(patientHN))
-  },[dispatch,success])
-
-  
+  },[dispatch,success,successDelete])
   
   function handleClick(path) {
     nevigate(path);
@@ -171,17 +54,29 @@ const EmbryoListComponent = (props) =>{
   const dispatch = useDispatch();
   const nevigate = useNavigate();
   const s3Bucket = 'https://embryos-project-s3.s3.ap-southeast-2.amazonaws.com/'
+  const s3 = new AWS.S3();
   function handleClick(path) {
     nevigate(path);
   }
 
-  const statusHandler = (embryo,embryoStatus) => {
-    dispatch(updateEmbryoStatus(embryo.patientHN,embryo.embryoNo,embryoStatus))
+  const statusHandler = async (embryo,embryoStatus) => {
+    await dispatch(updateEmbryoStatus(embryo.patientHN,embryo.embryoNo,embryoStatus))
+    dispatch({type:EMBRYO_DETAIL_RESET})
   }
 
-  const deleteHandler = (embryo) => {
+  const deleteHandler = async (embryo) => {
     if (window.confirm('Are you sure')) {
       dispatch(deleteEmbryo(embryo.patientHN,embryo.embryoNo))
+      const params_img = { 
+        Bucket: 'embryos-project-s3', 
+        Key: embryo.embryoImg
+      };
+      await s3.deleteObject(params_img).promise();
+      const params_grad = { 
+        Bucket: 'embryos-project-s3', 
+        Key: embryo.embryoGradImg
+      };
+      await s3.deleteObject(params_grad).promise();
     }
   }
   
@@ -221,11 +116,11 @@ const EmbryoListComponent = (props) =>{
                           <Col>{embryo.te=== '' ? `${embryo.pTe} (predicted)` : embryo.te }</Col>
                       </Row>
                       {
-                        embryo.success !== ''?
+                        embryo.embryoSuccess !== ''?
                         <Row>
                           <Col md={5}><h6>Status</h6></Col>
                           <Col>
-                            {embryo.success}
+                            {embryo.embryoSuccess}
                           </Col>
                         </Row>:<></>
                       }

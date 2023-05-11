@@ -151,7 +151,7 @@ export const updateEmbryoSuccess = (patientHN,embryoNo, embryoSuccess) => async 
       type: EMBRYO_UPDATE_SUCCESS_REQUEST,
     })
     
-    const { data } = await axios.put(`${api}/embryo/${patientHN}/${embryoNo}/success`,embryoSuccess)
+    const { data } = await axios.put(`${api}/embryos/${patientHN}/${embryoNo}/success`,{embryoSuccess})
 
     dispatch({
       type: EMBRYO_UPDATE_SUCCESS_SUCCESS,
@@ -173,13 +173,13 @@ export const updateEmbryoSuccess = (patientHN,embryoNo, embryoSuccess) => async 
   }
 }
 
-export const updateEmbryoTransferedImage = (patientHN,embryoNo, transferedImage) => async (dispatch) => {
+export const updateEmbryoTransferedImage = (patientHN,embryoNo, embryoTransferedImg) => async (dispatch) => {
   try {
     dispatch({
       type: EMBRYO_UPDATE_TRANSFERED_IMAGE_REQUEST,
     })
     
-    const { data } = await axios.put(`${api}/embryo/${patientHN}/${embryoNo}/transferimg`,transferedImage)
+    const { data } = await axios.put(`${api}/embryos/${patientHN}/${embryoNo}/transferedImg`,{embryoTransferedImg})
 
     dispatch({
       type: EMBRYO_UPDATE_TRANSFERED_IMAGE_FAIL,

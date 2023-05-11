@@ -21,7 +21,8 @@ import {
     EMBRYO_CREATE_RESET,
     EMBRYO_UPDATE_TRANSFERED_IMAGE_REQUEST,
     EMBRYO_UPDATE_TRANSFERED_IMAGE_SUCCESS,
-    EMBRYO_UPDATE_TRANSFERED_IMAGE_FAIL
+    EMBRYO_UPDATE_TRANSFERED_IMAGE_FAIL,
+    EMBRYO_DETAIL_RESET
  } from '../constants/embryoConstants'
 
 export const embryoListReducer = (state = { embryosList: [], embryosTransfered: [], embryosDiscared: []}, action) => {
@@ -49,6 +50,8 @@ export const embryoDetailsReducer = ( state = { embryo:{} }, action ) => {
       return { loading: false, embryo: action.payload }
     case EMBRYO_DETAIL_FAIL:
       return { ...state, loading: false, error: action.payload }
+    case EMBRYO_DETAIL_RESET:
+      return {embryo:{} }
     default:
       return state
   }
