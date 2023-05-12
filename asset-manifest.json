@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/embryo-app-frontend/static/css/main.94187a79.css",
-    "main.js": "/embryo-app-frontend/static/js/main.5077f071.js",
+    "main.js": "/embryo-app-frontend/static/js/main.b6290a48.js",
     "index.html": "/embryo-app-frontend/index.html",
     "main.94187a79.css.map": "/embryo-app-frontend/static/css/main.94187a79.css.map",
-    "main.5077f071.js.map": "/embryo-app-frontend/static/js/main.5077f071.js.map"
+    "main.b6290a48.js.map": "/embryo-app-frontend/static/js/main.b6290a48.js.map"
   },
   "entrypoints": [
     "static/css/main.94187a79.css",
-    "static/js/main.5077f071.js"
+    "static/js/main.b6290a48.js"
   ]
 }
