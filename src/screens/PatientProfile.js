@@ -9,7 +9,7 @@ import { PATIENT_DELETE_RESET } from '../constants/patientConstants'
 
 
 const PatientProfile = () => {
-  const {id} = useParams()
+  const {patientHN} = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -20,9 +20,9 @@ const PatientProfile = () => {
     success: successDelete,
   } = patientDelete
 
-  const deleteHandler = (id) => {
+  const deleteHandler = (patientHN) => {
     if (window.confirm('Are you sure')) {
-      dispatch(deletePatient(id))
+      dispatch(deletePatient(patientHN))
     }
   }
 
@@ -41,7 +41,7 @@ const PatientProfile = () => {
       <PatientInfo/>
       <EmbryoList/>
     </Row>
-    <Button variant='danger' onClick={() => deleteHandler(id)}>Delete Profile</Button>
+    <Button variant='danger' onClick={() => deleteHandler(patientHN)}>Delete Profile</Button>
     </div>
   )
 }
